@@ -7,6 +7,7 @@
                 <select name="" id="">
                     <option value="">Selecciona tu equipo</option>
                 </select>
+                <button @click="next">Seleccionar</button>
             </div>
         </section>
     </main>
@@ -14,6 +15,11 @@
 <script>
 export default {
 
+    methods:{
+        next(){
+            this.$router.push({ name: 'game' })
+        }
+    }
 }
 </script>
 <style scoped>
