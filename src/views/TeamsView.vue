@@ -4,23 +4,46 @@
         <section>
             <p class="subtitle">Porfavor Selecciona tu equipo</p>
             <div class="select-teams">
-                <select name="hola" id="1">
-                    <option value="">Selecciona tu equipo</option>
-                </select>
-                <button @click="next">Seleccionar</button>
-            </div>
+    <select name="team" id="1" @change="obtenerEquipos">
+      <option value="" disabled selected>Selecciona tu equipo</option>
+      <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}</option>
+    </select>
+    <button @click="next">Seleccionar</button>
+  </div>
         </section>
     </main>
 </template>
 <script>
-export default {
+import axios from 'axios';
 
-    methods:{
-        next(){
-            this.$router.push({ name: 'game' })
-        }
+let EQUIPOS_URL = 'http://127.0.0.1:8000/api/apiequipos';
+
+export default {
+  data() {
+    return {
+      equipos: [],
+    };
+  },
+  methods: {
+    next() {
+      this.$router.push({ name: 'game' });
+    },
+    async obtenerEquipos() {
+    try {
+        const response = await axios.get(EQUIPOS_URL);
+        this.equipos = response.data;
+        console.log(this.equipos);
+    } catch (error) {
+        throw error;
     }
 }
+
+  },
+  created() {
+    this.obtenerEquipos(); // Corregido el nombre del método
+  },
+};
+
 </script>
 <style scoped>
 .container {
@@ -57,7 +80,7 @@ export default {
 select {
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #eec20f; /* Color del borde */
+    border: 2px solid #2980b9; /* Color del borde */
     border-radius: 5px;
     outline: none;
     transition: border-color 0.3s ease;
@@ -90,7 +113,7 @@ select:focus {
 
 /* Estilo cuando el usuario pasa el ratón sobre el select */
 select:hover {
-    border-color: #2980b9; /* Nuevo color del borde al pasar el ratón sobre el select */
+    border-color: #e8c30c; /* Nuevo color del borde al pasar el ratón sobre el select */
 }
 
 /* Estilo para la opción seleccionada */
