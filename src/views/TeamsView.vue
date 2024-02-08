@@ -5,7 +5,7 @@
             <p class="subtitle">Porfavor Selecciona tu equipo</p>
             <div class="select-teams">
                 <div class="select-container">
-                    <select name="team" id="1" @change="obtenerEquipos">
+                    <select name="team" id="1" >
                         <option value="" disabled selected>Selecciona tu equipo</option>
                         <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}</option>
                     </select>
@@ -69,7 +69,8 @@ export default {
 
 .subtitle {
     text-align: center;
-    margin-top: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
     color: white;
     font-size: 20px;
     animation: shake-bottom 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both infinite;
