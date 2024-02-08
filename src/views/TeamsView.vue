@@ -5,7 +5,7 @@
             <p class="subtitle">Porfavor Selecciona tu equipo</p>
             <div class="select-teams">
                 <div class="select-container">
-                    <select name="team" id="1" >
+                    <select name="team" id="1" v-model="equipoSelected" @change="saveTeam">
                         <option value="" disabled selected>Selecciona tu equipo</option>
                         <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}</option>
                     </select>
@@ -26,6 +26,7 @@ export default {
     data() {
         return {
             equipos: [],
+            equipoSelected: ''
         };
     },
     methods: {
@@ -40,7 +41,11 @@ export default {
             } catch (error) {
                 throw error;
             }
+        },
+        saveTeam(){
+            localStorage.setItem('equipo', this.equipoSelected)
         }
+
 
     },
     created() {
