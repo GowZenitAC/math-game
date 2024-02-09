@@ -1,8 +1,13 @@
 <template lang="">
     <main class="container">
         <section class="quiz-container">
+            <div class="timer-container">
+                <p class="timer-text">Tiempo Restante: {{ formatTime }}</p>
+            </div>
             <h3>Categoria: {{preguntas[question_index].category.name}}</h3>
-            <p>Pregunta: {{preguntas[question_index].pregunta}}</p>
+            <p style="color: white">Pregunta: {{preguntas[question_index].pregunta}}</p>
+            <p style="color: white">Una fórmula matemática: <span ref="math"></span></p>
+           
             <ul>
                 <li class="option" v-for="option in preguntas[question_index].option" :key="option">
                 <label class="option-label">
@@ -17,18 +22,55 @@
 </template>
 <script >
 import axios from 'axios';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+
 let QUESTION_URL = 'http://127.0.0.1:8000/api/preguntasWithOptions'
 export default {
+    mounted () {
+       
+      },
     data() {
         return {
             preguntas: [],
             options: [],
             question_index: 0,
             opcion: "",
-            puntaje: 0
+            puntaje: 0,
+            timeRemaining: 5400,
+            timerInterval: null
         }
     },
+    computed: {
+        formatTime() {
+      // Convertir segundos a formato HH:MM:SS
+      const hours = Math.floor(this.timeRemaining / 3600);
+      const minutes = Math.floor((this.timeRemaining % 3600) / 60);
+      const seconds = this.timeRemaining % 60;
+      return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(seconds)}`;
+    },
+    },
     methods: {
+
+        // Método para iniciar el cronómetro
+    startTimer() {
+      this.timerInterval = setInterval(() => {
+        if (this.timeRemaining > 0) {
+          this.timeRemaining--;
+        } else {
+          clearInterval(this.timerInterval);
+          // Aquí puedes agregar lógica adicional cuando el tiempo llega a cero
+          alert('Tiempo agotado!');
+        }
+      }, 1000); // Actualizar cada segundo
+    },
+
+    // Función para agregar ceros a la izquierda si es necesario
+    pad(value) {
+      return String(value).padStart(2, '0');
+    },
+  
+
         getQuestions() {
             axios.get(QUESTION_URL)
                 .then(response => {
@@ -63,15 +105,20 @@ export default {
             console.log(`puntaje: ${puntaje}`)
         }
     },
+
     created() {
+        this.startTimer();
         this.getQuestions()
 
+    },
+    beforeDestroy() {
+        clearInterval(this.timerInterval);
     }
 }
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 .container {
     background-color: #145381;
     border-radius: 10px;
@@ -162,5 +209,24 @@ button:hover {
 
 button:active {
  transform: translate(0em, 0.2em);
+}
+
+/* diseño del timer */
+.timer-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000; /* Asegúrate de que el contador esté por encima de otros elementos */
+    background-color: rgba(82, 81, 52, 0.5); /* Fondo semi-transparente para mayor legibilidad */
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+.timer-text {
+    font-family: 'Press Start 2P', sans-serif; /* Cambia la fuente según tus preferencias */
+    font-size: 15px; /* Tamaño de fuente */
+    font-weight: thin; /* Grosor de la fuente */
+    letter-spacing: 0px; /* Espaciado entre caracteres */
+    color: white;
 }
 </style>
