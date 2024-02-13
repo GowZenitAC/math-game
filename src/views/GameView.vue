@@ -5,14 +5,19 @@
                 <p class="timer-text">Tiempo Restante: {{ formatTime }}</p>
             </div>
             <h3>Categoria: {{preguntas[question_index].category.name}}</h3>
-            <p style="color: white">Pregunta: {{preguntas[question_index].pregunta}}</p>
-            <p style="color: white">Una fórmula matemática: <span ref="math"></span></p>
-           
+            
+            <!-- <p style="color: white">Pregunta: {{preguntas[question_index].pregunta}}</p> -->
+            <!-- Utiliza v-html para renderizar la pregunta con KaTeX -->
+            <p style="color: white; white-space: pre-wrap">Pregunta: <span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
+            
             <ul>
                 <li class="option" v-for="option in preguntas[question_index].option" :key="option">
                 <label class="option-label">
                     <input class="option-input" type="radio" name="option" :value="option" v-model="opcion">
-                        <span class="option-text">{{option.option}}</span>
+                    <!-- Utiliza v-html para renderizar la opción con KaTeX -->
+                    <span class="option-text" v-html="renderOption(option.option)"></span>
+                        <!-- <span class="option-text">{{option.option}}</span> -->
+                        
                 </label>
                 </li>
             </ul>
@@ -28,7 +33,8 @@ import 'katex/dist/katex.min.css';
 let QUESTION_URL = 'http://127.0.0.1:8000/api/preguntasWithOptions'
 export default {
     mounted () {
-       
+        
+  
       },
     data() {
         return {
@@ -38,7 +44,7 @@ export default {
             opcion: "",
             puntaje: 0,
             timeRemaining: 5400,
-            timerInterval: null
+            timerInterval: null,
         }
     },
     computed: {
@@ -51,7 +57,6 @@ export default {
     },
     },
     methods: {
-
         // Método para iniciar el cronómetro
     startTimer() {
       this.timerInterval = setInterval(() => {
@@ -103,12 +108,28 @@ export default {
             const puntaje = this.puntaje
             localStorage.setItem('puntaje', puntaje)
             console.log(`puntaje: ${puntaje}`)
+        },
+        renderQuestion(question) {
+            // Dividir el texto en palabras
+    const words = question.split(/\s+/);
+    // Utilizar KaTeX para renderizar cada palabra y agregarla a un array
+    const renderedWords = words.map(word => katex.renderToString(word, { throwOnError: false }));
+    // Unir las palabras renderizadas con espacios entre ellas
+    return renderedWords.join(' ');
+        },
+        renderOption(option) {
+             // Dividir el texto de la opción en palabras
+    const words = option.split(/\s+/);
+    // Utilizar KaTeX para renderizar cada palabra y agregarla a un array
+    const renderedWords = words.map(word => katex.renderToString(word, { throwOnError: false }));
+    // Unir las palabras renderizadas con espacios entre ellas
+    return renderedWords.join(' ');
         }
     },
 
     created() {
         this.startTimer();
-        this.getQuestions()
+        this.getQuestions();
 
     },
     beforeDestroy() {
@@ -119,6 +140,7 @@ export default {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 .container {
     background-color: #145381;
     border-radius: 10px;
