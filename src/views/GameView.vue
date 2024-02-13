@@ -7,14 +7,14 @@
                 <p class="timer-text">Tiempo Restante: {{ formatTime }}</p>
             </div>
             <h3>Categoria: {{preguntas[question_index].category.name}}</h3>
-            <p style="color: white">Pregunta: {{preguntas[question_index].pregunta}}</p>
+            <p style="color: white; white-space: pre-wrap">Pregunta: <span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
             <p style="color: white">Una fórmula matemática: <span ref="math"></span></p>
            
             <ul>
                 <li class="option" v-for="option in preguntas[question_index].option" :key="option">
                 <label class="option-label">
                     <input class="option-input" type="radio" name="option" :value="option" v-model="opcion">
-                        <span class="option-text">{{option.option}}</span>
+                    <span class="option-text" v-html="renderOption(option.option)"></span>
                 </label>
                 </li>
             </ul>
@@ -53,7 +53,22 @@ export default {
         },
     },
     methods: {
-
+        renderQuestion(question) {
+            // Dividir el texto en palabras
+            const words = question.split(/\s+/);
+            // Utilizar KaTeX para renderizar cada palabra y agregarla a un array
+            const renderedWords = words.map(word => katex.renderToString(word, { throwOnError: false }));
+            // Unir las palabras renderizadas con espacios entre ellas
+            return renderedWords.join(' ');
+        },
+        renderOption(option) {
+            // Dividir el texto de la opción en palabras
+            const words = option.split(/\s+/);
+            // Utilizar KaTeX para renderizar cada palabra y agregarla a un array
+            const renderedWords = words.map(word => katex.renderToString(word, { throwOnError: false }));
+            // Unir las palabras renderizadas con espacios entre ellas
+            return renderedWords.join(' ');
+        },
         // Método para iniciar el cronómetro
         startTimer() {
             this.timerInterval = setInterval(() => {
@@ -257,4 +272,5 @@ button:active {
     font-size: 1.89em;
     text-align: center;
 
-}</style>
+}
+</style>
