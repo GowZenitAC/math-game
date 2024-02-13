@@ -1,4 +1,5 @@
 <template lang="">
+      <img class="image" :src="image[image_index].image_url" alt="">
     <main class="container">
         <section class="quiz-container">
             <h3>Categoria: {{preguntas[question_index].category.name}}</h3>
@@ -13,10 +14,12 @@
             </ul>
             <button @click="getOption">Submit</button>
         </section>
+      
     </main>
 </template>
 <script >
 import axios from 'axios';
+import {images} from '@/data/images.js'
 let QUESTION_URL = 'http://127.0.0.1:8000/api/preguntasWithOptions'
 export default {
     data() {
@@ -24,8 +27,10 @@ export default {
             preguntas: [],
             options: [],
             question_index: 0,
+            image_index: 0,
             opcion: "",
-            puntaje: 0
+            puntaje: 0,
+            image: images
         }
     },
     methods: {
@@ -54,6 +59,7 @@ export default {
                 alert('porfavor selecciona una respuesta')
             } else {
                 alert('respuesta incorrecta')
+                this.showImage()
                 this.nextQuestion()
             }
         },
@@ -61,17 +67,26 @@ export default {
             const puntaje = this.puntaje
             localStorage.setItem('puntaje', puntaje)
             console.log(`puntaje: ${puntaje}`)
-        }
+        },
+        showImage() {
+            this.image_index++
+            console.log(this.image[0])
+
+        },
+
     },
     created() {
         this.getQuestions()
-
     }
 }
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 
+.image{
+    width: 100px;
+    height: 100px;
+}
 .container {
     background-color: #145381;
     border-radius: 10px;
