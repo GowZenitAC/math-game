@@ -70,7 +70,7 @@ export default {
         },
         showImage() {
             this.image_index++
-             if (this.image_index >= this.image.length) {
+             if (this.image_index >= this.image.length - 1) {
                 alert('Fin de la trivia')
                 
              }
