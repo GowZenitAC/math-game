@@ -113,7 +113,7 @@ export default {
                     console.log(this.palabra)
                     if (this.palabra === this.palabras[this.word_index]) {
                         // Si la palabra actual es igual a la palabra en el índice actual del array
-                        alert("¡Palabra completada!");
+                        alert(`Descubriste una palabra!!, ${this.palabra}`);
                         this.word_index++; // Pasar a la siguiente palabra
                         this.palabra = ""; // Reiniciar la palabra actual
                     }
