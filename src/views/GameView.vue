@@ -1,5 +1,5 @@
 <template lang="">
-    <div></div>
+    <img class="image" :src="image[image_index].image_url" alt="">
     <p class="letters">Letras: {{ palabra }}</p>
     <main class="container">
         <section class="quiz-container">
@@ -26,7 +26,7 @@
 import axios from 'axios';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-
+import { images } from '@/data/images.js'
 let QUESTION_URL = 'http://127.0.0.1:8000/api/preguntasWithOptions'
 export default {
     data() {
@@ -40,7 +40,9 @@ export default {
             timeRemaining: 5400,
             timerInterval: null,
             palabra: "",
-            palabras: ['Ma', 'Algebra', 'Baldor', 'Ángulo']
+            palabras: ['Ma', 'Algebra', 'Baldor', 'Ángulo'],
+            image: images,
+            image_index: 0
         }
     },
     computed: {
@@ -124,6 +126,7 @@ export default {
             } else {
                 alert('respuesta incorrecta')
                 this.nextQuestion()
+                this.showImage()
             }
         },
         guardarPuntaje() {
@@ -131,6 +134,15 @@ export default {
             localStorage.setItem('puntaje', puntaje)
             console.log(`puntaje: ${puntaje}`)
         },
+
+        showImage() {
+            this.image_index++;
+            if (this.image_index >= this.image.length - 1) {
+                alert('Fin de la trivia')
+            }
+            console.log(this.image[0]);
+
+        }
     },
 
     created() {
@@ -147,6 +159,10 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+.image{
+    width: 100px;
+    height: 100px;
+}
 .container {
     background-color: #145381;
     border-radius: 10px;
