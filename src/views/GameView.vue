@@ -1,16 +1,14 @@
 <template lang="">
-    <img class="image" :src="image[image_index].image_url" alt="">
-    <p class="letters">Letras: {{ palabra }}</p>
+    <p class="letters">Palabra Secreta: {{ palabra }}</p>
+    <h3 class="category">CATEGORÍA: {{preguntas[question_index].category.name}}</h3>
     <main class="container">
         <section class="quiz-container">
             <div class="timer-container">
                 <p class="timer-text">Tiempo Restante: {{ formatTime }}</p>
             </div>
-            <img v-if="preguntas[question_index].imagen_pregunta" :src="getImageUrl(preguntas[question_index].imagen_pregunta)" alt="Imagen de la pregunta">
-            <h3>Categoria: {{preguntas[question_index].category.name}}</h3>
-            <p style="color: white; white-space: pre-wrap">Pregunta: <span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
-            <p style="color: white">Una fórmula matemática: <span ref="math"></span></p>
-           
+            <p class="question">Pregunta: <span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
+            <img class="question-image" v-if="preguntas[question_index].imagen_pregunta" :src="getImageUrl(preguntas[question_index].imagen_pregunta)" alt="Imagen de la pregunta">
+            <img class="image" :src="image[image_index].image_url" alt="">
             <ul>
                 <li class="option" v-for="option in preguntas[question_index].option" :key="option">
                 <label class="option-label">
@@ -167,18 +165,38 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 .image {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 6em;
+    top: 20em;
 }
 
+.category{
+    font-family: 'Josefin Sans', sans-serif;
+    color: white;
+    font-size: 1.3em;
+    margin-right: 1em;
+    margin-left: 24em;
+    display: inline;
+}
+.question{
+    font-family: 'Josefin Sans', sans-serif;
+    color: white;
+    white-space: wrap;
+    width: 40em; 
+    font-size: 1em;
+    text-align: center;
+}
+.question-image{
+    margin: auto;
+}
 .container {
     background-color: #145381;
     border-radius: 10px;
     width: 100%;
     height: 100%;
-    margin: auto;
-    text-align: center;
-    margin: 30px 0 10px 0;
+    margin: 2px 0 10px 0;
     display: flex;
 }
 
@@ -187,7 +205,7 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 2em;
+    margin: 1em;
     width: 90%;
 }
 
@@ -292,9 +310,8 @@ button:active {
 }
 
 .letters {
-    margin: 10px 5px 10px 5px;
     font-size: 1.89em;
-    text-align: center;
-
+    text-align: left;
+    display: inline;
 }
 </style>
