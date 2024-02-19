@@ -5,10 +5,16 @@
                 <p class="timer-text">Tiempo Restante: {{ formatTime }}</p>
             </div>
             <h3>Categoria: {{preguntas[question_index].category.name}}</h3>
+
+            
             
             <!-- <p style="color: white">Pregunta: {{preguntas[question_index].pregunta}}</p> -->
             <!-- Utiliza v-html para renderizar la pregunta con KaTeX -->
             <p style="color: white; white-space: pre-wrap">Pregunta: <span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
+            <!-- obtener imagen -->
+            <!-- Mostrar imagen de la pregunta si está disponible -->
+            <img v-if="preguntas[question_index].imagen_pregunta" :src="getImageUrl(preguntas[question_index].imagen_pregunta)" alt="Imagen de la pregunta">
+            
             
             <ul>
                 <li class="option" v-for="option in preguntas[question_index].option" :key="option">
@@ -30,7 +36,7 @@ import axios from 'axios';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 
-let QUESTION_URL = 'http://127.0.0.1:8000/api/preguntasWithOptions'
+let QUESTION_URL = 'https://adminmathday.com/api/preguntasWithOptions'
 export default {
     mounted () {
         
@@ -45,6 +51,7 @@ export default {
             puntaje: 0,
             timeRemaining: 5400,
             timerInterval: null,
+            BASE_URL: 'https://adminmathday.com/'
         }
     },
     computed: {
@@ -124,6 +131,9 @@ export default {
     const renderedWords = words.map(word => katex.renderToString(word, { throwOnError: false }));
     // Unir las palabras renderizadas con espacios entre ellas
     return renderedWords.join(' ');
+        },
+        getImageUrl(imagePath) {
+            return `${this.BASE_URL}${imagePath}`;
         }
     },
 
