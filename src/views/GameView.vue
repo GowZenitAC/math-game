@@ -6,6 +6,7 @@
             <div class="timer-container">
                 <p class="timer-text">Tiempo Restante: {{ formatTime }}</p>
             </div>
+            <img v-if="preguntas[question_index].imagen_pregunta" :src="getImageUrl(preguntas[question_index].imagen_pregunta)" alt="Imagen de la pregunta">
             <h3>Categoria: {{preguntas[question_index].category.name}}</h3>
             <p style="color: white; white-space: pre-wrap">Pregunta: <span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
             <p style="color: white">Una fórmula matemática: <span ref="math"></span></p>
@@ -27,7 +28,7 @@ import axios from 'axios';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import { images } from '@/data/images.js'
-let QUESTION_URL = 'http://127.0.0.1:8000/api/preguntasWithOptions'
+let QUESTION_URL = 'https://adminmathday.com/api/preguntasWithOptions'
 export default {
     data() {
         return {
@@ -42,7 +43,8 @@ export default {
             palabra: "",
             palabras: ['Ma', 'Algebra', 'Baldor', 'Ángulo'],
             image: images,
-            image_index: 0
+            image_index: 0,
+            BASE_URL: 'https://adminmathday.com/'
         }
     },
     computed: {
@@ -142,7 +144,12 @@ export default {
             }
             console.log(this.image[0]);
 
+        },
+
+        getImageUrl(imagePath) {
+            return `${this.BASE_URL}${imagePath}`;
         }
+
     },
 
     created() {
@@ -159,10 +166,11 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-.image{
+.image {
     width: 100px;
     height: 100px;
 }
+
 .container {
     background-color: #145381;
     border-radius: 10px;

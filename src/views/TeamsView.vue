@@ -20,7 +20,7 @@
 <script>
 import axios from 'axios';
 
-let EQUIPOS_URL = 'http://127.0.0.1:8000/api/apiequipos';
+let EQUIPOS_URL = 'https://adminmathday.com/api/apiequipos';
 
 export default {
     data() {
