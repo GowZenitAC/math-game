@@ -11,7 +11,7 @@
             <img class="image" :src="image[image_index].image_url" alt="">
             <ul>
                 <li class="option" v-for="option in preguntas[question_index].option" :key="option">
-                <label class="option-label">
+                <label :class="{ 'option-label-success': correct_aswer && option_selected === option, 'option-label-fail': !correct_aswer && option_selected === option}" class="option-label">
                     <input class="option-input" type="radio" name="option" :value="option" v-model="opcion">
                     <span class="option-text" v-html="renderOption(option.option)"></span>
                 </label>
@@ -45,6 +45,8 @@ export default {
             image: images,
             image_index: 0,
             BASE_URL: 'https://adminmathday.com/',
+            correct_aswer: null,
+            option_selected: null,
         }
     },
     computed: {
@@ -102,14 +104,20 @@ export default {
             this.question_index++
             console.log(this.question_index);
             this.opcion = "";
+            this.correct_aswer = null;
+            this.option_selected = null;
 
         },
         getOption() {
             const opcion = this.opcion
             console.log(opcion)
             if (opcion.points > 0) {
-                alert("Respuesta correcta")
-                this.nextQuestion()
+                this.correct_aswer = true
+                this.option_selected = this.opcion
+                setTimeout(() => {
+                    this.nextQuestion()
+                },1200)
+               
                 this.puntaje = this.puntaje + opcion.points
                 this.guardarPuntaje()
                 if (this.palabra.length < this.palabras[this.word_index].length) {
@@ -139,9 +147,12 @@ export default {
             } else if (opcion == "") {
                 alert('porfavor selecciona una respuesta')
             } else {
-                alert('respuesta incorrecta')
-                this.nextQuestion()
+                // alert('respuesta incorrecta')
+                setTimeout(()=>{
+                    this.nextQuestion()
                 this.showImage()
+                }, 1200)
+                this.option_selected = this.opcion
             }
         },
         guardarPuntaje() {
@@ -278,6 +289,16 @@ export default {
     background-color: beige;
     border-radius: 10px;
     position: relative;
+    
+}
+
+.option-label-fail{
+    animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+    background-color: rgb(230, 88, 88);
+}
+.option-label-success{
+    animation: shake-vertical 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+    background-color: rgb(109, 240, 109);
 }
 
 .option-text {
@@ -338,5 +359,53 @@ button:active {
     font-size: 1.89em;
     text-align: left;
     display: inline;
+}
+
+/* Animaciones */
+@keyframes shake-horizontal {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60% {
+    transform: translateX(10px);
+  }
+  80% {
+    transform: translateX(8px);
+  }
+  90% {
+    transform: translateX(-8px);
+  }
+}
+@keyframes shake-vertical {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateY(-8px);
+  }
+  20%,
+  40%,
+  60% {
+    transform: translateY(8px);
+  }
+  80% {
+    transform: translateY(6.4px);
+  }
+  90% {
+    transform: translateY(-6.4px);
+  }
 }
 </style>
