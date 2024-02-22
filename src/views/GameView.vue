@@ -164,14 +164,18 @@ export default {
         showImage() {
             this.image_index++;
             if (this.image_index >= this.image.length - 1) {
-                this.word_index++;
-                this.image_index = 0;
-                this.palabra = "";
+                
+                
+                
                 Swal.fire({
                     icon: "error",
                     title: `Oops...Se te han descontado puntos`,
-                    text: `No descubriste la palabra: ${this.palabra}`,
-                });
+                    text: `No descubriste la palabra: ${this.palabras[this.word_index]}`,
+                }).then(() => {
+                    this.palabra="";
+                    this.word_index++;
+                    this.image_index = 0;
+                })
             }
             console.log(this.images[this.image_index]);
 
