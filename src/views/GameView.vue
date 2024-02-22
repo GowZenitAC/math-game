@@ -11,7 +11,7 @@
             <img class="image" :src="image[image_index].image_url" alt="">
             <ul>
                 <li class="option" v-for="option in preguntas[question_index].option" :key="option">
-                <label class="option-label">
+                <label :class="{ 'option-label-success': correct_aswer && option_selected === option, 'option-label-fail': !correct_aswer && option_selected === option}" class="option-label">
                     <input class="option-input" type="radio" name="option" :value="option" v-model="opcion">
                     <span class="option-text" v-html="renderOption(option.option)"></span>
                 </label>
@@ -26,6 +26,8 @@ import axios from 'axios';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import { images } from '@/data/images.js'
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css';
 let QUESTION_URL = 'https://adminmathday.com/api/preguntasWithOptions'
 export default {
     data() {
@@ -42,7 +44,9 @@ export default {
             palabras: ['Ma', 'Algebra', 'Baldor', 'Ángulo'],
             image: images,
             image_index: 0,
-            BASE_URL: 'https://adminmathday.com/'
+            BASE_URL: 'https://adminmathday.com/',
+            correct_aswer: null,
+            option_selected: null,
         }
     },
     computed: {
@@ -100,14 +104,20 @@ export default {
             this.question_index++
             console.log(this.question_index);
             this.opcion = "";
+            this.correct_aswer = null;
+            this.option_selected = null;
 
         },
         getOption() {
             const opcion = this.opcion
             console.log(opcion)
             if (opcion.points > 0) {
-                alert("Respuesta correcta")
-                this.nextQuestion()
+                this.correct_aswer = true
+                this.option_selected = this.opcion
+                setTimeout(() => {
+                    this.nextQuestion()
+                },1200)
+               
                 this.puntaje = this.puntaje + opcion.points
                 this.guardarPuntaje()
                 if (this.palabra.length < this.palabras[this.word_index].length) {
@@ -115,18 +125,34 @@ export default {
                     console.log(this.palabra)
                     if (this.palabra === this.palabras[this.word_index]) {
                         // Si la palabra actual es igual a la palabra en el índice actual del array
-                        alert(`Descubriste una palabra!!, ${this.palabra}`);
-                        this.word_index++; // Pasar a la siguiente palabra
-                        this.palabra = ""; // Reiniciar la palabra actual
+                        Swal.fire({
+                            title: `¡Felicidades!, Descubriste la palabra: ${this.palabra}`,
+                            width: 600,
+                            padding: "3em",
+                            color: "#716add",
+                            background: "#fff url(/images/trees.png)",
+                            backdrop: `
+                                rgba(0,0,123,0.4)
+                                url("/images/nyan-cat.gif")
+                                left top
+                                no-repeat`
+                        }).then(() => {
+                            this.word_index++; // Pasar a la siguiente palabra
+                            this.palabra = ""; // Reiniciar la palabra actual
+                        })
+
                     }
                 }
 
             } else if (opcion == "") {
                 alert('porfavor selecciona una respuesta')
             } else {
-                alert('respuesta incorrecta')
-                this.nextQuestion()
-                this.showImage()
+                // alert('respuesta incorrecta')
+                setTimeout(()=>{
+                    this.nextQuestion()
+                      this.showImage()
+                }, 1200)
+                this.option_selected = this.opcion
             }
         },
         guardarPuntaje() {
@@ -138,9 +164,16 @@ export default {
         showImage() {
             this.image_index++;
             if (this.image_index >= this.image.length - 1) {
-                alert('Fin de la trivia')
+                this.word_index++;
+                this.image_index = 0;
+                this.palabra = "";
+                Swal.fire({
+                    icon: "error",
+                    title: `Oops...Se te han descontado puntos`,
+                    text: `No descubriste la palabra: ${this.palabra}`,
+                });
             }
-            console.log(this.image[0]);
+            console.log(this.images[this.image_index]);
 
         },
 
@@ -172,7 +205,7 @@ export default {
     top: 20em;
 }
 
-.category{
+.category {
     font-family: 'Josefin Sans', sans-serif;
     color: white;
     font-size: 1.3em;
@@ -180,17 +213,20 @@ export default {
     margin-left: 24em;
     display: inline;
 }
-.question{
+
+.question {
     font-family: 'Josefin Sans', sans-serif;
     color: white;
     white-space: wrap;
-    width: 40em; 
+    width: 40em;
     font-size: 1em;
     text-align: center;
 }
-.question-image{
+
+.question-image {
     margin: auto;
 }
+
 .container {
     background-color: #145381;
     border-radius: 10px;
@@ -253,6 +289,16 @@ export default {
     background-color: beige;
     border-radius: 10px;
     position: relative;
+    
+}
+
+.option-label-fail{
+    animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+    background-color: rgb(230, 88, 88);
+}
+.option-label-success{
+    animation: shake-vertical 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+    background-color: rgb(109, 240, 109);
 }
 
 .option-text {
@@ -313,5 +359,53 @@ button:active {
     font-size: 1.89em;
     text-align: left;
     display: inline;
+}
+
+/* Animaciones */
+@keyframes shake-horizontal {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60% {
+    transform: translateX(10px);
+  }
+  80% {
+    transform: translateX(8px);
+  }
+  90% {
+    transform: translateX(-8px);
+  }
+}
+@keyframes shake-vertical {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    transform: translateY(-8px);
+  }
+  20%,
+  40%,
+  60% {
+    transform: translateY(8px);
+  }
+  80% {
+    transform: translateY(6.4px);
+  }
+  90% {
+    transform: translateY(-6.4px);
+  }
 }
 </style>
