@@ -150,7 +150,7 @@ export default {
                 // alert('respuesta incorrecta')
                 setTimeout(()=>{
                     this.nextQuestion()
-                this.showImage()
+                      this.showImage()
                 }, 1200)
                 this.option_selected = this.opcion
             }
@@ -173,7 +173,7 @@ export default {
                     text: `No descubriste la palabra: ${this.palabra}`,
                 });
             }
-            console.log(this.image[0]);
+            console.log(this.images[this.image_index]);
 
         },
 
