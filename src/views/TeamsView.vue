@@ -1,20 +1,51 @@
 <template>
+        <span class="checkbox-text">universidad</span>
+      <input type="checkbox" class="toggle" id="switch" v-model="toggle">  
+    
     <main class="container">
+       
         <h1 class="title">Teams</h1>
-        <section>
-            <p class="subtitle">Porfavor Selecciona tu equipo</p>
-            <div class="select-teams">
-                <div class="select-container">
-                    <select name="team" id="1" v-model="equipoSelected" @change="saveTeam">
-                        <option value="" disabled selected>Selecciona tu equipo</option>
-                        <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}</option>
-                    </select>
-                </div>
-                <div class="botom-container">
-                    <button @click="next">Seleccionar</button>
-                </div>
+        
+        <div class="card " :class="{ 'flipped': toggle }">
+            <div class="front">
+                <h1 class="title">preparatoria</h1>
+                <section>
+                    <p class="subtitle">Porfavor Selecciona tu equipo</p>
+                    <div class="select-teams">
+                        <div class="select-container">
+                            <select name="team" id="1" v-model="equipoSelected" @change="saveTeam">
+                                <option value="" disabled selected>Selecciona tu equipo</option>
+                                <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="botom-container">
+                            <button @click="next">Seleccionar</button>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </section>
+
+            <div class="back ">
+                <h1 class="title">utc</h1>
+                <section>
+                    <p class="subtitle">Porfavor Selecciona tu equipo</p>
+                    <div class="select-teams">
+                        <div class="select-container">
+                            <select name="team" id="1" v-model="equipoSelected" @change="saveTeam">
+                                <option value="" disabled selected>Selecciona tu equipo</option>
+                                <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}
+                                </option>
+                            </select>
+                        </div>
+                        
+                        <div class="botom-container">
+                            <button @click="next">Seleccionar</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
     </main>
 </template>
 <script>
@@ -42,7 +73,7 @@ export default {
                 throw error;
             }
         },
-        saveTeam(){
+        saveTeam() {
             localStorage.setItem('equipo', this.equipoSelected)
         }
 
@@ -65,6 +96,96 @@ export default {
 
 }
 
+
+/* Estilo para el input checkbox */
+.toggle {
+    left: 78%;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 40px;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.checkbox-text {
+    left: 77%;
+    position: relative;
+    color: white;
+    font-size: 1.5rem;
+    margin-right: 1px;
+
+    
+    
+}
+
+.toggle:checked {
+  background-color: #4caf50;
+}
+
+.toggle::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  transition: transform 0.3s ease;
+}
+
+.toggle:checked::before {
+  transform: translateX(20px);
+}
+
+
+.card {
+    position: relative;
+  width: 50%;
+  height: 100%;
+ left: 25%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+
+}
+
+.card .front,
+.card .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card .back {
+  transform: rotateY(180deg);
+}
+
+.card .front {
+  transform: rotateY(0deg);
+}
+
+.card.flipped .front {
+  transform: rotateY(180deg);
+}
+
+.card.flipped .back {
+  transform: rotateY(0deg);
+}
+
+
+    .toggle:checked + .container .card  {
+      transform: rotateY(180deg);
+    }
+
+
+
+
+
 .title {
     text-align: center;
     color: white;
@@ -84,8 +205,7 @@ export default {
 
 .select-teams {
     display: flex;
-    justify-content: space-between;
-
+    justify-content: space-evenly;
     align-items: center;
 }
 
@@ -166,7 +286,7 @@ select option:hover {
     animation: colorChange 1s ease infinite;
 }
 
-.select-container {
+.select-container2 {
     flex: 1;
     /* Toma el espacio disponible */
     margin-right: 10px;
@@ -175,12 +295,14 @@ select option:hover {
 
 /* botom */
 .button-container {
-  flex: 0; /* No toma espacio adicional */
+    flex: 0;
+    /* No toma espacio adicional */
 }
+
 button {
     appearance: button;
     left: 20px;
-    
+
     background-color: #1899D6;
     border: solid transparent;
     border-radius: 16px;
@@ -223,7 +345,7 @@ button:after {
     z-index: -1;
 }
 
-button:main,
+
 button:focus {
     user-select: auto;
 }
