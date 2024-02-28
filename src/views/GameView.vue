@@ -1,33 +1,33 @@
-<template lang="">
+<template>
     <main class="container">
-        <section class="quiz-container">
+        <section v-if="question_index < preguntas.length" class="quiz-container">
             <div class="timer-container">
                 <p class="timer-text">Tiempo Restante: {{ formatTime }}</p>
             </div>
             <h3>Categoria: {{preguntas[question_index].category.name}}</h3>
 
-            
-            
-            <!-- <p style="color: white">Pregunta: {{preguntas[question_index].pregunta}}</p> -->
             <!-- Utiliza v-html para renderizar la pregunta con KaTeX -->
-            <p style="color: white; white-space: pre-wrap">Pregunta: <span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
-            <!-- obtener imagen -->
+            <p style="color: white; white-space: pre-wrap"><span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
+            
             <!-- Mostrar imagen de la pregunta si está disponible -->
             <img v-if="preguntas[question_index].imagen_pregunta" :src="getImageUrl(preguntas[question_index].imagen_pregunta)" alt="Imagen de la pregunta">
             
-            
             <ul>
                 <li class="option" v-for="option in preguntas[question_index].option" :key="option">
-                <label class="option-label">
-                    <input class="option-input" type="radio" name="option" :value="option" v-model="opcion">
-                    <!-- Utiliza v-html para renderizar la opción con KaTeX -->
-                    <span class="option-text" v-html="renderOption(option.option)"></span>
-                        <!-- <span class="option-text">{{option.option}}</span> -->
-                        
-                </label>
+                    <label class="option-label">
+                        <input class="option-input" type="radio" name="option" :value="option" v-model="opcion">
+                        <!-- Utiliza v-html para renderizar la opción con KaTeX -->
+                        <span class="option-text" v-html="renderOption(option.option)"></span>
+                    </label>
                 </li>
             </ul>
-            <button @click="getOption">Submit</button>
+            <button @click="getOption">{{ question_index === preguntas.length - 1 ? 'Finalizar' : 'Submit' }}</button>
+        </section>
+
+        <!-- Sección de finalización -->
+        <section v-else>
+            <h2>¡Felicidades, has terminado el cuestionario!</h2>
+            <p>Tiempo total: {{ formatTime }}</p>
         </section>
     </main>
 </template>
@@ -100,15 +100,18 @@ export default {
             const opcion = this.opcion
             console.log(opcion)
             if (opcion.points > 0) {
-                alert("Respuesta correcta")
                 this.nextQuestion()
                 this.puntaje = this.puntaje + opcion.points
                 this.guardarPuntaje()
             } else if (opcion == "") {
-                alert('porfavor selecciona una respuesta')
+                alert('Por favor selecciona una respuesta')
             } else {
-                alert('respuesta incorrecta')
                 this.nextQuestion()
+            }
+            
+            // Verificar si estamos en la última pregunta y finalizar el cuestionario si es así
+            if (this.question_index === this.preguntas.length - 1) {
+                this.finishQuiz();
             }
         },
         guardarPuntaje() {
@@ -134,7 +137,13 @@ export default {
         },
         getImageUrl(imagePath) {
             return `${this.BASE_URL}${imagePath}`;
-        }
+        },
+        finishQuiz() {
+            clearInterval(this.timerInterval);
+            const currentTime = new Date().toISOString(); // Obtener la hora actual en formato ISO
+            localStorage.setItem('tiempoFinalizacion', currentTime);
+            console.log('Cuestionario finalizado.');
+        },
     },
 
     created() {
