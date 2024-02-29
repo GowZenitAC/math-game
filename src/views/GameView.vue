@@ -18,7 +18,7 @@
                 </li>
             </ul>
             <button v-if="!finished" @click="getOption">Submit</button>
-            <button v-else @click="getOption">Finish Game</button>
+            <button v-else @click="finishGame">Finish Game</button>
         </section>
     </main>
 </template>
@@ -29,7 +29,8 @@ import 'katex/dist/katex.min.css';
 import { images } from '@/data/images.js'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css';
-let QUESTION_URL = 'https://adminmathday.com/api/preguntasWithOptions'
+let QUESTION_URL = 'http://127.0.0.1:8000/api/preguntasWithOptions'
+let RESULT_URL = 'http://127.0.0.1:8000/api/resultados'
 export default {
     data() {
         return {
@@ -41,6 +42,8 @@ export default {
             puntaje: 0,
             timeRemaining: 5400,
             timerInterval: null,
+            startTime: null,
+            endTime: null,
             palabra: "",
             palabras: ['Matemáticas', 'Algebra', 'Baldor', 'Ángulo'],
             image: images,
@@ -48,7 +51,8 @@ export default {
             BASE_URL: 'https://adminmathday.com/',
             correct_aswer: null,
             option_selected: null,
-            finished: false
+            finished: false,
+            finishedTime: null
         }
     },
     computed: {
@@ -79,6 +83,7 @@ export default {
         },
         // Método para iniciar el cronómetro
         startTimer() {
+            this.startTime = new Date();
             this.timerInterval = setInterval(() => {
                 if (this.timeRemaining > 0) {
                     this.timeRemaining--;
@@ -108,8 +113,8 @@ export default {
             this.opcion = "";
             this.correct_aswer = null;
             this.option_selected = null;
-            if (this.preguntas.length == this.preguntas.length - 1) {
-                this.finished = true
+            if (this.question_index >= this.preguntas.length - 1) {
+                this.finished = true; // Si es la última pregunta, establecer finished a true
             }
 
         },
@@ -169,7 +174,18 @@ export default {
             localStorage.setItem('puntaje', puntaje)
             console.log(`puntaje: ${puntaje}`)
         },
+        saveTime() {
+            this.endTime = new Date(); // Guardar la hora de finalización
+            const elapsedTime = (this.endTime - this.startTime) / 1000; // Tiempo transcurrido en segundos
 
+            const hours = Math.floor(elapsedTime / 3600);
+            const minutes = Math.floor((elapsedTime % 3600) / 60);
+            const seconds = Math.floor(elapsedTime % 60);
+            const formattedTime = `${hours}:${minutes}:${seconds}`
+            this.finishedTime = formattedTime
+            localStorage.setItem('tiempo', formattedTime)
+            console.log(formattedTime);
+        },
         showImage() {
             this.image_index++;
             if (this.image_index >= this.image.length - 1) {
@@ -192,6 +208,34 @@ export default {
 
         getImageUrl(imagePath) {
             return `${this.BASE_URL}${imagePath}`;
+        },
+        finishGame() {
+           const equipo = localStorage.getItem('equipo',)
+          
+            this.getOption()
+            this.saveTime()
+            const res = {
+                id_equipo: equipo,
+                puntos: this.puntaje,
+                tiempo: this.finishedTime
+            }
+            axios.post(RESULT_URL, res).then(response => {
+                console.log(response.data)
+            }).catch(error => {
+                console.log(error)
+            })
+            Swal.fire({
+                title: "FELICITACIONES!, has terminado satisfactoriamente el juego",
+                html: "Tus resultados estan siendo generados...",
+                allowOutsideClick: false,
+                timer: 5000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            }).then((result) => {
+                this.$router.push({ name: 'result' })
+            });
         }
 
     },
@@ -432,4 +476,5 @@ button:active {
     90% {
         transform: translateY(-6.4px);
     }
-}</style>
+}
+</style>
