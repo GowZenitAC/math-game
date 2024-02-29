@@ -17,7 +17,8 @@
                 </label>
                 </li>
             </ul>
-            <button @click="getOption">Submit</button>
+            <button v-if="!finished" @click="getOption">Submit</button>
+            <button v-else @click="getOption">Finish Game</button>
         </section>
     </main>
 </template>
@@ -41,12 +42,13 @@ export default {
             timeRemaining: 5400,
             timerInterval: null,
             palabra: "",
-            palabras: ['Ma', 'Algebra', 'Baldor', 'Ángulo'],
+            palabras: ['Matemáticas', 'Algebra', 'Baldor', 'Ángulo'],
             image: images,
             image_index: 0,
             BASE_URL: 'https://adminmathday.com/',
             correct_aswer: null,
             option_selected: null,
+            finished: false
         }
     },
     computed: {
@@ -106,6 +108,9 @@ export default {
             this.opcion = "";
             this.correct_aswer = null;
             this.option_selected = null;
+            if (this.preguntas.length == this.preguntas.length - 1) {
+                this.finished = true
+            }
 
         },
         getOption() {
@@ -116,9 +121,9 @@ export default {
                 this.option_selected = this.opcion
                 setTimeout(() => {
                     this.nextQuestion()
-                },1200)
-               
-                this.puntaje = this.puntaje + opcion.points
+                }, 1200)
+
+                this.puntaje = parseInt(this.puntaje) + parseInt(opcion.points);
                 this.guardarPuntaje()
                 if (this.palabra.length < this.palabras[this.word_index].length) {
                     this.palabra += this.palabras[this.word_index][this.palabra.length];
@@ -145,12 +150,16 @@ export default {
                 }
 
             } else if (opcion == "") {
-                alert('porfavor selecciona una respuesta')
+                Swal.fire({
+                    title: "Porfavor...",
+                    text: "Selecciona una respuesta",
+                    icon: "warning"
+                });
             } else {
                 // alert('respuesta incorrecta')
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.nextQuestion()
-                      this.showImage()
+                    this.showImage()
                 }, 1200)
                 this.option_selected = this.opcion
             }
@@ -164,15 +173,15 @@ export default {
         showImage() {
             this.image_index++;
             if (this.image_index >= this.image.length - 1) {
-                
-                
-                
+
+
+
                 Swal.fire({
                     icon: "error",
                     title: `Oops...Se te han descontado puntos`,
                     text: `No descubriste la palabra: ${this.palabras[this.word_index]}`,
                 }).then(() => {
-                    this.palabra="";
+                    this.palabra = "";
                     this.word_index++;
                     this.image_index = 0;
                 })
@@ -293,14 +302,15 @@ export default {
     background-color: beige;
     border-radius: 10px;
     position: relative;
-    
+
 }
 
-.option-label-fail{
+.option-label-fail {
     animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
     background-color: rgb(230, 88, 88);
 }
-.option-label-success{
+
+.option-label-success {
     animation: shake-vertical 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
     background-color: rgb(109, 240, 109);
 }
@@ -367,49 +377,59 @@ button:active {
 
 /* Animaciones */
 @keyframes shake-horizontal {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  10%,
-  30%,
-  50%,
-  70% {
-    transform: translateX(-10px);
-  }
-  20%,
-  40%,
-  60% {
-    transform: translateX(10px);
-  }
-  80% {
-    transform: translateX(8px);
-  }
-  90% {
-    transform: translateX(-8px);
-  }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70% {
+        transform: translateX(-10px);
+    }
+
+    20%,
+    40%,
+    60% {
+        transform: translateX(10px);
+    }
+
+    80% {
+        transform: translateX(8px);
+    }
+
+    90% {
+        transform: translateX(-8px);
+    }
 }
+
 @keyframes shake-vertical {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  10%,
-  30%,
-  50%,
-  70% {
-    transform: translateY(-8px);
-  }
-  20%,
-  40%,
-  60% {
-    transform: translateY(8px);
-  }
-  80% {
-    transform: translateY(6.4px);
-  }
-  90% {
-    transform: translateY(-6.4px);
-  }
-}
-</style>
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70% {
+        transform: translateY(-8px);
+    }
+
+    20%,
+    40%,
+    60% {
+        transform: translateY(8px);
+    }
+
+    80% {
+        transform: translateY(6.4px);
+    }
+
+    90% {
+        transform: translateY(-6.4px);
+    }
+}</style>
