@@ -29,8 +29,8 @@ import 'katex/dist/katex.min.css';
 import { images } from '@/data/images.js'
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css';
-let QUESTION_URL = 'http://127.0.0.1:8000/api/preguntasWithOptions'
-let RESULT_URL = 'http://127.0.0.1:8000/api/resultados'
+let QUESTION_URL = 'https://adminmathday.com/api/preguntasWithOptions'
+let RESULT_URL = 'https://adminmathday.com/api/resultados'
 export default {
     data() {
         return {
