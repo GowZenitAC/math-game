@@ -1,133 +1,142 @@
 <template>
-  <button  @click="toggleCard">alternarTarjeta</button> 
+    <button @click="toggleCard">alternarTarjeta</button>
     <main class="container">
-        <h1 class="title">Teams</h1>
-        <div class="card" :class="{ 'flipped': flipped }"> 
-
+      <h1 class="title">Teams</h1>
+      <div class="card" :class="{ 'flipped': flipped }">
+  
         <div class="front">
-            <h1 class="title">preparatoria</h1>
-            <section>
-                <p class="subtitle">Porfavor Selecciona tu equipo</p>
-                <div class="select-teams">
-                    <div class="select-container">
-                        <select name="team" id="1" v-model="equipoSelected" @change="saveTeam">
-                            <option value="" disabled selected>Selecciona tu equipo</option>
-                            <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="botom-container">
-                        <button @click="next">Seleccionar</button>
-                    </div>
-                </div>
-            </section>
+          <h1 class="title">preparatoria</h1>
+          <section>
+            <p class="subtitle">Por favor Selecciona tu equipo</p>
+            <div class="select-teams">
+              <div class="select-container">
+                <select name="team" id="1" v-model="equipoSelected" @change="saveTeam">
+                  <option value="" disabled selected>Selecciona tu equipo</option>
+                  <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}
+                  </option>
+                </select>
+              </div>
+              <div class="botom-container">
+                <button @click="next">Seleccionar</button>
+              </div>
+            </div>
+          </section>
         </div>
-
+  
         <div class="back ">
-            <h1 class="title">utc</h1>
-            <section>
-                <p class="subtitle">Porfavor Selecciona tu carrera</p>
-                <div class="select-teams">
-                    <div class="select-container">
-                        <select name="team" id="1" v-model="carrerasSelected" @change="savecarreras">
-                            <option value="" disabled selected> Selecciona tu carrera</option>
-                            <option v-for="carrera in carreras" :key="carrera.id" :value="carrera.id">{{ carrera.carrera }}
-                            </option>
-                        </select>
-                        <select name="team" id="1" v-model="equipotsuSelected" @change="saveEquipo">
-                            <option value="" disabled selected>Selecciona tu equipo</option>
-                            <option v-for="equipotsu in equipotsu" :key="equipotsu.id" :value="equipotsu.id">{{
-                                equipotsu.nombretsu }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div class="botom-container">
-                        <button @click="next">Seleccionar</button>
-                    </div>
-                </div>
-            </section>
+          <h1 class="title">utc</h1>
+          <section>
+            <p class="subtitle">Por favor Selecciona tu carrera</p>
+            <div class="select-teams">
+              <div class="select-container">
+                <select name="team" id="1" v-model="carrerasSelected" @change="savecarreras">
+                  <option value="" disabled selected> Selecciona tu carrera</option>
+                  <option v-for="carrera in carreras" :key="carrera.id" :value="carrera.id">{{ carrera.carrera2 }}
+                  </option> 
+                </select>
+                <select name="team" id="2" v-model="equipotsuSelected" @change="saveEquipo">
+                  <option value="" disabled selected>Selecciona tu equipo</option>
+                  <option v-for="equipotsu in equiposFiltradosPorCarrera " :key="equipotsu.id" :value="equipotsu.id">{{ equipotsu.nombretsu }}
+                  </option>
+                </select>
+              </div>
+  
+              <div class="botom-container">
+                <button @click="next">Seleccionar</button>
+              </div>
+            </div>
+          </section>
         </div>
-    </div>
+      </div>
     </main>
-</template>
-<script>
-import axios from 'axios';
-
-let EQUIPOS_URL = 'https://adminmathday.com/api/apiequipos';
-let CARRERAS_URL = 'https://adminmathday.com/api/carreras';
-let TEAMS_URL = 'https://adminmathday.com/api/equiposTSU';
-export default {
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  let EQUIPOS_URL = 'https://adminmathday.com/api/apiequipos';
+  let CARRERAS_URL = 'https://adminmathday.com/api/carreras';
+  let TEAMS_URL = 'https://adminmathday.com/api/equiposTSU';
+  
+  export default {
     data() {
-        return {
-            flipped: false,
-            equipos: [],
-            equipoSelected: '',
-            carreras: [],
-            carrerasSelected: '',
-            equipotsu: [],
-            equipotsuSelected: '',
-        };
+      return {
+        flipped: false,
+        equipos: [],
+        equipoSelected: '',
+        carreras: [],
+        carrerasSelected: '',
+        equipotsu: [],
+        equipotsuSelected: '',
+      };
+    },
+    computed: {
+      // Filtra los equipos basados en la carrera seleccionada
+      equiposFiltradosPorCarrera() {
+      if (!this.carrerasSelected) {
+        return [];
+      }
+      return this.equipotsu.filter(equipotsu => equipotsu.id === this.carrerasSelected);
+    }
+
     },
     methods: {
-        next() {
-            this.$router.push({ name: 'game' });
-        },
-
-        toggleCard() {
-      this.flipped = !this.flipped;
-    },
-        async obtenerEquipos() {
-            try {
-                const response = await axios.get(EQUIPOS_URL);
-                this.equipos = response.data;
-                console.log(this.equipos);
-            } catch (error) {
-                throw error;
-            }
-        },
-        async obtenercarreras() {
-            try {
-                const response = await axios.get(CARRERAS_URL);
-                this.carreras = response.data;
-                console.log(this.carreras);
-            } catch (error) {
-                throw error;
-            }
-        },
-        async obtenerequipostsu() {
-            try {
-                const response = await axios.get(TEAMS_URL);
-                this.equipotsu = response.data;
-                console.log(this.equipotsu);
-            } catch (error) {
-                throw error;
-            }
-        },
-
-
-
-
-        saveTeam() {
-            localStorage.setItem('equipo', this.equipoSelected)
-        },
-        savecarreras() {
-            localStorage.setItem('carreras', this.carrerasSelected)
-        },
-        saveEquipo() {
-            localStorage.setItem('equipotsu', this.equipotsuSelected)
+      next() {
+        this.$router.push({ name: 'game' });
+      },
+  
+      toggleCard() {
+        this.flipped = !this.flipped;
+      },
+  
+      async obtenerEquipos() {
+        try {
+          const response = await axios.get(EQUIPOS_URL);
+          this.equipos = response.data;
+        } catch (error) {
+          console.error('Error al obtener equipos:', error);
         }
-
-
+      },
+  
+      async obtenercarreras() {
+        try {
+          const response = await axios.get(CARRERAS_URL);
+          this.carreras = response.data;
+        } catch (error) {
+          console.error('Error al obtener carreras:', error);
+        }
+      },
+  
+      async obtenerequipostsu() {
+        try {
+          const response = await axios.get(TEAMS_URL);
+          this.equipotsu = response.data;
+        } catch (error) {
+          console.error('Error al obtener equipos TSU:', error);
+        }
+      },
+  
+      saveTeam() {
+        localStorage.setItem('equipo', this.equipoSelected);
+      },
+  
+      savecarreras() {
+        localStorage.setItem('carreras', this.carrerasSelected);
+       
+      },
+  
+      saveEquipo() {
+        localStorage.setItem('equipotsu', this.equipotsuSelected);
+      },
     },
     created() {
-        this.obtenerEquipos(); // Corregido el nombre del método
-        this.obtenercarreras();
-        this.obtenerequipostsu();
+      this.obtenerEquipos();
+      this.obtenercarreras();
+      this.obtenerequipostsu();
     },
-};
-
-</script>
+  };
+  </script>
+  
 <style scoped>
 .container {
     background-color: #145381;
