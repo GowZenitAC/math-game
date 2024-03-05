@@ -76,7 +76,7 @@
       if (!this.carrerasSelected) {
         return [];
       }
-      return this.equipotsu.filter(equipotsu => equipotsu.id === this.carrerasSelected);
+      return this.equipotsu.filter(equipotsu => equipotsu.id_carrera === this.carrerasSelected.toString());
     }
 
     },
