@@ -1,5 +1,5 @@
 <template>
-    <button @click="toggleCard">alternarTarjeta</button>
+    <button @click="toggleCard">TSU Teams</button>
     <main class="container">
       <h1 class="title">Teams</h1>
       <div class="card" :class="{ 'flipped': flipped }">
@@ -82,7 +82,12 @@
     },
     methods: {
       next() {
-        this.$router.push({ name: 'game' });
+        if (!this.flipped) {
+          this.$router.push({ name: 'game' });
+        }else {
+          console.log("vista de teamsTSU");
+        }
+        
       },
   
       toggleCard() {
