@@ -1,90 +1,142 @@
 <template>
-        <span class="checkbox-text">universidad</span>
-      <input type="checkbox" class="toggle" id="switch" v-model="toggle">  
-    
+    <button @click="toggleCard">alternarTarjeta</button>
     <main class="container">
-       
-        <h1 class="title">Teams</h1>
-        
-        <div class="card " :class="{ 'flipped': toggle }">
-            <div class="front">
-                <h1 class="title">preparatoria</h1>
-                <section>
-                    <p class="subtitle">Porfavor Selecciona tu equipo</p>
-                    <div class="select-teams">
-                        <div class="select-container">
-                            <select name="team" id="1" v-model="equipoSelected" @change="saveTeam">
-                                <option value="" disabled selected>Selecciona tu equipo</option>
-                                <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="botom-container">
-                            <button @click="next">Seleccionar</button>
-                        </div>
-                    </div>
-                </section>
+      <h1 class="title">Teams</h1>
+      <div class="card" :class="{ 'flipped': flipped }">
+  
+        <div class="front">
+          <h1 class="title">preparatoria</h1>
+          <section>
+            <p class="subtitle">Por favor Selecciona tu equipo</p>
+            <div class="select-teams">
+              <div class="select-container">
+                <select name="team" id="1" v-model="equipoSelected" @change="saveTeam">
+                  <option value="" disabled selected>Selecciona tu equipo</option>
+                  <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}
+                  </option>
+                </select>
+              </div>
+              <div class="botom-container">
+                <button @click="next">Seleccionar</button>
+              </div>
             </div>
-
-            <div class="back ">
-                <h1 class="title">utc</h1>
-                <section>
-                    <p class="subtitle">Porfavor Selecciona tu equipo</p>
-                    <div class="select-teams">
-                        <div class="select-container">
-                            <select name="team" id="1" v-model="equipoSelected" @change="saveTeam">
-                                <option value="" disabled selected>Selecciona tu equipo</option>
-                                <option v-for="equipo in equipos" :key="equipo.id" :value="equipo.id">{{ equipo.nombre }}
-                                </option>
-                            </select>
-                        </div>
-                        
-                        <div class="botom-container">
-                            <button @click="next">Seleccionar</button>
-                        </div>
-                    </div>
-                </section>
-            </div>
+          </section>
         </div>
+  
+        <div class="back ">
+          <h1 class="title">utc</h1>
+          <section>
+            <p class="subtitle">Por favor Selecciona tu carrera</p>
+            <div class="select-teams">
+              <div class="select-container">
+                <select name="team" id="1" v-model="carrerasSelected" @change="savecarreras">
+                  <option value="" disabled selected> Selecciona tu carrera</option>
+                  <option v-for="carrera in carreras" :key="carrera.id" :value="carrera.id">{{ carrera.carrera2 }}
+                  </option> 
+                </select>
+                <select name="team" id="2" v-model="equipotsuSelected" @change="saveEquipo">
+                  <option value="" disabled selected>Selecciona tu equipo</option>
+                  <option v-for="equipotsu in equiposFiltradosPorCarrera " :key="equipotsu.id" :value="equipotsu.id">{{ equipotsu.nombretsu }}
+                  </option>
+                </select>
+              </div>
+  
+              <div class="botom-container">
+                <button @click="next">Seleccionar</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
     </main>
-</template>
-<script>
-import axios from 'axios';
-
-let EQUIPOS_URL = 'https://adminmathday.com/api/apiequipos';
-
-export default {
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  let EQUIPOS_URL = 'https://adminmathday.com/api/apiequipos';
+  let CARRERAS_URL = 'https://adminmathday.com/api/carreras';
+  let TEAMS_URL = 'https://adminmathday.com/api/equiposTSU';
+  
+  export default {
     data() {
-        return {
-            equipos: [],
-            equipoSelected: ''
-        };
+      return {
+        flipped: false,
+        equipos: [],
+        equipoSelected: '',
+        carreras: [],
+        carrerasSelected: '',
+        equipotsu: [],
+        equipotsuSelected: '',
+      };
+    },
+    computed: {
+      // Filtra los equipos basados en la carrera seleccionada
+      equiposFiltradosPorCarrera() {
+      if (!this.carrerasSelected) {
+        return [];
+      }
+      return this.equipotsu.filter(equipotsu => equipotsu.id_carrera === this.carrerasSelected.toString());
+    }
+
     },
     methods: {
-        next() {
-            this.$router.push({ name: 'game' });
-        },
-        async obtenerEquipos() {
-            try {
-                const response = await axios.get(EQUIPOS_URL);
-                this.equipos = response.data;
-                console.log(this.equipos);
-            } catch (error) {
-                throw error;
-            }
-        },
-        saveTeam() {
-            localStorage.setItem('equipo', this.equipoSelected)
+      next() {
+        this.$router.push({ name: 'game' });
+      },
+  
+      toggleCard() {
+        this.flipped = !this.flipped;
+      },
+  
+      async obtenerEquipos() {
+        try {
+          const response = await axios.get(EQUIPOS_URL);
+          this.equipos = response.data;
+        } catch (error) {
+          console.error('Error al obtener equipos:', error);
         }
-
-
+      },
+  
+      async obtenercarreras() {
+        try {
+          const response = await axios.get(CARRERAS_URL);
+          this.carreras = response.data;
+        } catch (error) {
+          console.error('Error al obtener carreras:', error);
+        }
+      },
+  
+      async obtenerequipostsu() {
+        try {
+          const response = await axios.get(TEAMS_URL);
+          this.equipotsu = response.data;
+        } catch (error) {
+          console.error('Error al obtener equipos TSU:', error);
+        }
+      },
+  
+      saveTeam() {
+        localStorage.setItem('equipo', this.equipoSelected);
+      },
+  
+      savecarreras() {
+        localStorage.setItem('carreras', this.carrerasSelected);
+       
+      },
+  
+      saveEquipo() {
+        localStorage.setItem('equipotsu', this.equipotsuSelected);
+      },
     },
     created() {
-        this.obtenerEquipos(); // Corregido el nombre del método
+      this.obtenerEquipos();
+      this.obtenercarreras();
+      this.obtenerequipostsu();
     },
-};
-
-</script>
+  };
+  </script>
+  
 <style scoped>
 .container {
     background-color: #145381;
@@ -95,53 +147,34 @@ export default {
     border-radius: 15px;
 
 }
-
-
-/* Estilo para el input checkbox */
-.toggle {
-    left: 78%;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 40px;
-  height: 20px;
-  background-color: #ddd;
-  border-radius: 20px;
-  position: relative;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-.checkbox-text {
+ button {
     left: 77%;
     position: relative;
-    color: white;
-    font-size: 1.5rem;
-    margin-right: 1px;
-
-    
-    
+    padding: 1.3em 3em;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
 }
 
-.toggle:checked {
-  background-color: #4caf50;
+button:hover {
+  background-color: #23c483;
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
 }
 
-.toggle::before {
-  content: '';
-  width: 18px;
-  height: 18px;
-  background-color: white;
-  border-radius: 50%;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  transition: transform 0.3s ease;
+button:active {
+  transform: translateY(-1px);
 }
-
-.toggle:checked::before {
-  transform: translateX(20px);
-}
-
 
 .card {
     position: relative;
@@ -152,7 +185,6 @@ export default {
   transition: transform 0.8s;
 
 }
-
 .card .front,
 .card .back {
   position: absolute;
@@ -176,15 +208,6 @@ export default {
 .card.flipped .back {
   transform: rotateY(0deg);
 }
-
-
-    .toggle:checked + .container .card  {
-      transform: rotateY(180deg);
-    }
-
-
-
-
 
 .title {
     text-align: center;
@@ -219,10 +242,11 @@ select {
     outline: none;
     transition: border-color 0.3s ease;
     width: 200px;
+    margin-right: 10px;
     /* Ajusta el ancho según tus necesidades */
     cursor: pointer;
     /* Cambia el cursor al pasar sobre el select */
-    color: #f5f0f0;
+    color: #eeee0e;
     background-color: rgb(77, 71, 245);
 }
 
@@ -233,8 +257,8 @@ select option {
 
 /* Estilo del icono desplegable */
 .select-teams::after {
-    content: '\25BC';
-    /* Triángulo apuntando hacia abajo como un icono desplegable */
+    /* content: '\25BC';
+    Triángulo apuntando hacia abajo como un icono desplegable */
     font-size: 12px;
     position: absolute;
     top: 50%;
@@ -259,7 +283,7 @@ select:hover {
 /* Estilo para la opción seleccionada */
 select option:checked {
     background-color: #3498db;
-    color: #fff;
+    color: #f40b0b;
 }
 
 /* Animación para el cambio de color del option al pasar el ratón */
@@ -299,10 +323,9 @@ select option:hover {
     /* No toma espacio adicional */
 }
 
-button {
+ .botom-container  button {
     appearance: button;
-    left: 20px;
-
+    left: 10px;
     background-color: #1899D6;
     border: solid transparent;
     border-radius: 16px;
@@ -330,7 +353,7 @@ button {
     white-space: nowrap;
 }
 
-button:after {
+ .botom-container button:after {
     background-clip: padding-box;
     background-color: #1CB0F6;
     border: solid transparent;
@@ -346,19 +369,17 @@ button:after {
 }
 
 
-button:focus {
+ button:focus {
     user-select: auto;
 }
 
-button:hover:not(:disabled) {
+ button:hover:not(:disabled) {
     filter: brightness(1.1);
 }
-
-button:disabled {
+ button:disabled {
     cursor: auto;
 }
-
-button:active:after {
+ button:active:after {
     border-width: 0 0 0px;
 }
 
