@@ -22,11 +22,13 @@
         </section>
     </main>
 </template>
-<script >
+
+<script>
 import axios from 'axios';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import { images } from '@/data/images.js'
+import { images } from '@/data/images.js';
+import { palabras } from '@/data/palabras';
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css';
 let QUESTION_URL = 'https://adminmathday.com/api/preguntasWithOptions'
@@ -45,7 +47,7 @@ export default {
             startTime: null,
             endTime: null,
             palabra: "",
-            palabras: ['Matemáticas', 'Algebra', 'Baldor', 'Ángulo'],
+            palabras: palabras,
             image: images,
             image_index: 0,
             BASE_URL: 'https://adminmathday.com/',
@@ -130,13 +132,15 @@ export default {
 
                 this.puntaje = parseInt(this.puntaje) + parseInt(opcion.points);
                 this.guardarPuntaje()
-                if (this.palabra.length < this.palabras[this.word_index].length) {
-                    this.palabra += this.palabras[this.word_index][this.palabra.length];
-                    console.log(this.palabra)
-                    if (this.palabra === this.palabras[this.word_index]) {
+                if (this.palabra.length < this.palabras[this.word_index].palabra.length) {
+                    this.palabra += this.palabras[this.word_index].palabra[this.palabra.length];
+                    // console.log(this.palabra)
+                    if (this.palabra === this.palabras[this.word_index].palabra) {
+                        this.puntaje = parseInt(this.puntaje) + parseInt(this.palabras[this.word_index].puntaje);
                         // Si la palabra actual es igual a la palabra en el índice actual del array
                         Swal.fire({
                             title: `¡Felicidades!, Descubriste la palabra: ${this.palabra}`,
+                            html: `Ganaste: ${this.palabras[this.word_index].puntaje} puntos`,
                             width: 600,
                             padding: "3em",
                             color: "#716add",
@@ -153,7 +157,6 @@ export default {
 
                     }
                 }
-
             } else if (opcion == "") {
                 Swal.fire({
                     title: "Porfavor...",
@@ -187,31 +190,34 @@ export default {
             console.log(formattedTime);
         },
         showImage() {
-            this.image_index++;
-            if (this.image_index >= this.image.length - 1) {
-
-
-
-                Swal.fire({
-                    icon: "error",
-                    title: `Oops...Se te han descontado puntos`,
-                    text: `No descubriste la palabra: ${this.palabras[this.word_index]}`,
-                }).then(() => {
-                    this.palabra = "";
-                    this.word_index++;
-                    this.image_index = 0;
-                })
+            if (this.image_index < this.image.length - 1) {
+                this.image_index++;
+            }else{
+                this.image_index = 0
             }
-            console.log(this.images[this.image_index]);
+            if (this.word_index >= this.palabras.length) {
+                return
+            } else {
+                if (this.image_index >= this.image.length - 1) {
+                    Swal.fire({
+                        icon: "error",
+                        title: `Oops...Se te han descontado puntos`,
+                        text: `No descubriste la palabra: ${this.palabras[this.word_index].palabra}`,
+                    }).then(() => {
+                        this.palabra = "";
+                        this.word_index++;
+                        this.image_index = 0;
+                    })
+                }
+            }
 
         },
-
         getImageUrl(imagePath) {
             return `${this.BASE_URL}${imagePath}`;
         },
         finishGame() {
-           const equipo = localStorage.getItem('equipo',)
-          
+            const equipo = localStorage.getItem('equipo',)
+
             this.getOption()
             this.saveTime()
             const res = {
@@ -250,6 +256,7 @@ export default {
     }
 }
 </script>
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
