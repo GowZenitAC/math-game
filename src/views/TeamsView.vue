@@ -1,5 +1,7 @@
+
 <template>
-    <button @click="toggleCard">alternarTarjeta</button>
+   <img  class="logo" src="../../public/assets/images/logom.png" alt="">
+    <button class="cambio" @click="toggleCard">alternarTarjeta</button>
     <main class="container">
       <h1 class="title">Teams</h1>
       <div class="card" :class="{ 'flipped': flipped }">
@@ -17,7 +19,7 @@
                 </select>
               </div>
               <div class="botom-container">
-                <button @click="next">Seleccionar</button>
+                <button @click="next">Aceptar</button>
               </div>
             </div>
           </section>
@@ -42,7 +44,7 @@
               </div>
   
               <div class="botom-container">
-                <button @click="next">Seleccionar</button>
+                <button @click="next">Aceptar</button>
               </div>
             </div>
           </section>
@@ -52,6 +54,7 @@
   </template>
   
   <script>
+ 
   import axios from 'axios';
   
   let EQUIPOS_URL = 'https://adminmathday.com/api/apiequipos';
@@ -139,16 +142,26 @@
   
 <style scoped>
 .container {
-    background-color: #145381;
+    background-color:#3d9fbf;
     margin: 2em 0 2em 0;
     width: 100%;
-    height: 65dvh;
-    box-shadow: inset 0 0 1em -0.5em #f6f6f6;
+    height: 47.9dvh;
+    box-shadow:  inset 0 0 1em -0.5em #d2a70b, /* Sombra interior amarilla */
+        0 0 0em 0.0em rgb(247, 200, 71);
     border-radius: 15px;
-
+    border: #e8c30c 1px s;
+    position: relative;
+    top: -60px;
 }
+.logo{
+        position: relative;
+        left:77%;
+        width:10rem;
+        top: -100px;
+  
+    }
  button {
-    left: 77%;
+    left: 60%;
     position: relative;
     padding: 1.3em 3em;
   font-size: 12px;
@@ -163,11 +176,13 @@
   transition: all 0.3s ease 0s;
   cursor: pointer;
   outline: none;
+  top: -50px;
+  
 }
 
 button:hover {
-  background-color: #23c483;
-  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  background-color: #6cb91f;
+  box-shadow: 0px 15px 20px rgba(46, 229, 205, 0.4);
   color: #fff;
   transform: translateY(-7px);
 }
@@ -212,7 +227,7 @@ button:active {
 .title {
     text-align: center;
     color: white;
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin: 0 3rem 0 3rem;
 }
 
@@ -236,7 +251,7 @@ button:active {
 select {
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #2980b9;
+    border: 2px solid #1fb962;
     /* Color del borde */
     border-radius: 5px;
     outline: none;
@@ -246,8 +261,8 @@ select {
     /* Ajusta el ancho según tus necesidades */
     cursor: pointer;
     /* Cambia el cursor al pasar sobre el select */
-    color: #eeee0e;
-    background-color: rgb(77, 71, 245);
+    color: #0b1ef1;
+    background-color:#fff;
 }
 
 /* Estilo del texto del option */
@@ -351,6 +366,7 @@ select option:hover {
     -webkit-user-select: none;
     vertical-align: middle;
     white-space: nowrap;
+    top: 0;
 }
 
  .botom-container button:after {

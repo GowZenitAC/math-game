@@ -32,7 +32,7 @@ export default {
 </script>
 <style scoped>
 .cssbuttons-io-button {
-    background: #4351ca;
+    background: #6cb91f;
     color: white;
     font-family: inherit;
     padding: 0.35em;
@@ -63,7 +63,7 @@ export default {
     height: 2.2em;
     width: 2.2em;
     border-radius: 0.7em;
-    box-shadow: 0.1em 0.1em 0.6em 0.2em #6768b9;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em #67b9a2;
     right: 0.3em;
     transition: all 0.3s;
 }
@@ -75,7 +75,7 @@ export default {
 .cssbuttons-io-button .icon svg {
     width: 1.1em;
     transition: transform 0.3s;
-    color: #313ab6;
+    color: #6cb91f;
 }
 
 .cssbuttons-io-button:hover .icon svg {

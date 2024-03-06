@@ -1,5 +1,6 @@
 <template>
     <img src="../../assets/img/utc.webp" alt="">
+   
 </template>
 <script>
 export default {
@@ -12,4 +13,5 @@ export default {
     img{
         width: 5rem;
     }
+   
 </style>
