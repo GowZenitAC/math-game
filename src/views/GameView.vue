@@ -292,7 +292,7 @@ export default {
 }
 
 .container {
-    background-color: #145381;
+    background-color: #0086b2;
     border-radius: 10px;
     width: 100%;
     height: 100%;

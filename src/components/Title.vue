@@ -1,5 +1,6 @@
 <template>
     <div>
+      
         <h1 class="title"><span class="text-1">Math </span><span class="text">Scramble</span></h1>
         <h3>A simple math game</h3>
     </div>
