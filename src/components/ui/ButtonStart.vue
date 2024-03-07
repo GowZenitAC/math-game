@@ -32,7 +32,7 @@ export default {
 </script>
 <style scoped>
 .cssbuttons-io-button {
-    background: #6cb91f;
+    background: rgb(108,185,31);
     color: white;
     font-family: inherit;
     padding: 0.35em;
@@ -44,7 +44,7 @@ export default {
     letter-spacing: 0.05em;
     display: flex;
     align-items: center;
-    box-shadow: inset 0 0 1.6em -0.6em #6f78c5;
+    box-shadow: inset 0 0 1.6em -0.6em #6fc573;
     overflow: hidden;
     position: relative;
     height: 2.8em;
@@ -63,7 +63,7 @@ export default {
     height: 2.2em;
     width: 2.2em;
     border-radius: 0.7em;
-    box-shadow: 0.1em 0.1em 0.6em 0.2em #67b9a2;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em #67b967;
     right: 0.3em;
     transition: all 0.3s;
 }
