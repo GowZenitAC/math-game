@@ -1,13 +1,13 @@
 
 <template>
-   <img  class="logo" src="../../public/assets/images/logom.png" alt="">
-    <button class="cambio" @click="toggleCard">alternarTarjeta</button>
+   <img  class="logo" src="/assets/images/logom.png" alt="">
+    <button class="cambio" @click="toggleCard">Equipos TSU</button>
     <main class="container">
-      <h1 class="title">Teams</h1>
+      <h1 class="title">Equipos</h1>
       <div class="card" :class="{ 'flipped': flipped }">
   
         <div class="front">
-          <h1 class="title">preparatoria</h1>
+          <h1 class="title">Preparatoria</h1>
           <section>
             <p class="subtitle">Por favor Selecciona tu equipo</p>
             <div class="select-teams">
@@ -26,7 +26,7 @@
         </div>
   
         <div class="back ">
-          <h1 class="title">utc</h1>
+          <h1 class="title">TSU</h1>
           <section>
             <p class="subtitle">Por favor Selecciona tu carrera</p>
             <div class="select-teams">
@@ -146,19 +146,15 @@
     margin: 2em 0 2em 0;
     width: 100%;
     height: 47.9dvh;
-    box-shadow:  inset 0 0 1em -0.5em #d2a70b, /* Sombra interior amarilla */
-        0 0 0em 0.0em rgb(247, 200, 71);
-    border-radius: 15px;
-    border: #e8c30c 1px s;
+    border-radius: 15px; 
     position: relative;
     top: -60px;
 }
 .logo{
+        width: 10em;
         position: relative;
-        left:77%;
-        width:10rem;
-        top: -100px;
-  
+        left: 80%;
+        top: -80px;
     }
  button {
     left: 60%;
@@ -176,7 +172,7 @@
   transition: all 0.3s ease 0s;
   cursor: pointer;
   outline: none;
-  top: -50px;
+  top: -40px;
   
 }
 
@@ -251,7 +247,7 @@ button:active {
 select {
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #1fb962;
+    /* border: 2px solid #1fb962; */
     /* Color del borde */
     border-radius: 5px;
     outline: none;
@@ -282,25 +278,6 @@ select option {
     pointer-events: none;
     /* Evita que el icono afecte a la interacción del usuario con el select */
 }
-
-/* Estilo cuando el select está enfocado */
-select:focus {
-    border-color: #2ecc71;
-    /* Nuevo color del borde cuando está enfocado */
-}
-
-/* Estilo cuando el usuario pasa el ratón sobre el select */
-select:hover {
-    border-color: #e8c30c;
-    /* Nuevo color del borde al pasar el ratón sobre el select */
-}
-
-/* Estilo para la opción seleccionada */
-select option:checked {
-    background-color: #3498db;
-    color: #f40b0b;
-}
-
 /* Animación para el cambio de color del option al pasar el ratón */
 @keyframes colorChange {
     0% {

@@ -7,7 +7,7 @@
 .logo{
         position: relative;
         left:85%;
-        width:10%;
+        width:10em;
         
         top: -80px;
     

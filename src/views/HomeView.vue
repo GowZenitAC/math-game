@@ -21,6 +21,6 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  top: -120px;
+  top: -90px;
 }
 </style>

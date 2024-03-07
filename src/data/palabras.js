@@ -1,6 +1,6 @@
 export const palabras = [
     {
-      palabra:'Mat',
+      palabra:'Matemáticas',
       puntaje:10
     },
     {

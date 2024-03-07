@@ -6,7 +6,7 @@
             <div class="timer-container">
                 <p class="timer-text">Tiempo Restante: {{ formatTime }}</p>
             </div>
-            <p class="question">Pregunta: <span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
+            <p class="question"><span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
             <img class="question-image" v-if="preguntas[question_index].imagen_pregunta" :src="getImageUrl(preguntas[question_index].imagen_pregunta)" alt="Imagen de la pregunta">
             <img class="image" :src="image[image_index].image_url" alt="">
             <ul>
@@ -140,7 +140,7 @@ export default {
                         // Si la palabra actual es igual a la palabra en el índice actual del array
                         Swal.fire({
                             title: `¡Felicidades!, Descubriste la palabra: ${this.palabra}`,
-                            html: `Ganaste: ${this.palabras[this.word_index].puntaje} puntos`,
+                            html: `Ganaste: ${this.palabras[this.word_index].puntaje} puntos extra`,
                             width: 600,
                             padding: "3em",
                             color: "#716add",
