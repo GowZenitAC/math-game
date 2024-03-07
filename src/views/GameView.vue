@@ -201,8 +201,8 @@ export default {
                 if (this.image_index >= this.image.length - 1) {
                     Swal.fire({
                         icon: "error",
-                        title: `Oops...Se te han descontado puntos`,
-                        text: `No descubriste la palabra: ${this.palabras[this.word_index].palabra}`,
+                        title: `Oops...No descubriste la palabra: ${this.palabras[this.word_index].palabra}`,
+                        text: `Palabra ${this.palabras.indexOf(this.palabras[this.word_index]) + 1} de ${this.palabras.length}`,
                     }).then(() => {
                         this.palabra = "";
                         this.word_index++;
