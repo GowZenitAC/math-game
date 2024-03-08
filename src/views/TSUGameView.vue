@@ -1,19 +1,19 @@
 <template lang="">
     <p class="letters">Palabra Secreta: {{ palabra }}</p>
-    <h3 class="category">CATEGORÍA: {{preguntas[question_index].category.name}}</h3>
+    <h3 class="category">CATEGORÍA: {{preguntas[question_index].category_t_s_u.nametsu}}</h3>
     <main class="container">
         <section class="quiz-container">
             <div class="timer-container">
                 <p class="timer-text">Tiempo Restante: {{ formatTime }}</p>
             </div>
             <p class="question"><span v-html="renderQuestion(preguntas[question_index].pregunta)"></span></p>
-            <img class="question-image" v-if="preguntas[question_index].imagen_pregunta" :src="getImageUrl(preguntas[question_index].imagen_pregunta)" alt="Imagen de la pregunta">
+            <img class="question-image" v-if="preguntas[question_index].imagen_preguntatsu" :src="getImageUrl(preguntas[question_index].imagen_preguntatsu)" alt="Imagen de la pregunta">
             <img class="image" :src="image[image_index].image_url" alt="">
             <ul>
-                <li class="option" v-for="option in preguntas[question_index].option" :key="option">
+                <li class="option" v-for="option in preguntas[question_index].option_t_s_u" :key="option">
                 <label :class="{ 'option-label-success': correct_aswer && option_selected === option, 'option-label-fail': !correct_aswer && option_selected === option}" class="option-label">
                     <input class="option-input" type="radio" name="option" :value="option" v-model="opcion">
-                    <span class="option-text" v-html="renderOption(option.option)"></span>
+                    <span class="option-text" v-html="renderOption(option.optiontsu)"></span>
                 </label>
                 </li>
             </ul>
@@ -31,7 +31,7 @@ import { images } from '@/data/images.js';
 import { palabras } from '@/data/palabras';
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css';
-let QUESTION_URL = 'https://adminmathday.com/api/preguntasWithOptions'
+
 let RESULT_URL = 'https://adminmathday.com/api/resultados'
 export default {
     data() {
@@ -103,11 +103,7 @@ export default {
         },
 
         getQuestions() {
-            axios.get(QUESTION_URL)
-                .then(response => {
-                    this.preguntas = response.data
-                    console.log(this.preguntas)
-                }).catch(error => console.log(error))
+            this.preguntas = JSON.parse(localStorage.getItem('preguntas'));
         },
         nextQuestion() {
             this.question_index++
@@ -123,14 +119,14 @@ export default {
         getOption() {
             const opcion = this.opcion
             console.log(opcion)
-            if (opcion.points > 0) {
+            if (opcion.puntostsu > 0) {
                 this.correct_aswer = true
                 this.option_selected = this.opcion
                 setTimeout(() => {
                     this.nextQuestion()
                 }, 1200)
 
-                this.puntaje = parseInt(this.puntaje) + parseInt(opcion.points);
+                this.puntaje = parseInt(this.puntaje) + parseInt(opcion.puntostsu);
                 this.guardarPuntaje()
                 if (this.palabra.length < this.palabras[this.word_index].palabra.length) {
                     this.palabra += this.palabras[this.word_index].palabra[this.palabra.length];
