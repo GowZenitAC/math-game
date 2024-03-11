@@ -424,6 +424,7 @@ button:active {
     font-size: 1.89em;
     text-align: left;
     display: inline;
+    color: aliceblue;
 }
 
 /* Animaciones */

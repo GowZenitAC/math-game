@@ -212,7 +212,7 @@ export default {
             return `${this.BASE_URL}${imagePath}`;
         },
         finishGame() {
-            const equipo = localStorage.getItem('equipo',)
+            const equipo = localStorage.getItem('equipotsu',)
 
             this.getOption()
             this.saveTime()
