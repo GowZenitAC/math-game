@@ -32,7 +32,7 @@ import { palabras } from '@/data/palabras';
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-let RESULT_URL = 'https://adminmathday.com/api/resultados'
+let RESULT_URL = 'https://adminmathday.com/api/resultadosTSU'
 export default {
     data() {
         return {
@@ -217,9 +217,9 @@ export default {
             this.getOption()
             this.saveTime()
             const res = {
-                id_equipo: equipo,
-                puntos: this.puntaje,
-                tiempo: this.finishedTime
+                id_equipotsu: equipo,
+                puntostsu: this.puntaje,
+                tiempotsu: this.finishedTime
             }
             axios.post(RESULT_URL, res).then(response => {
                 console.log(response.data)
