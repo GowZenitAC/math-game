@@ -265,9 +265,29 @@ export default {
     width: 150px;
     height: 150px;
     position: absolute;
-    left: 6em;
-    top: 20em;
+    left: 8em;
+    top: 18em;
 }
+
+@media(min-width: 1800px) {
+    .image {
+       width: 150px;
+       height: 150px;
+       left: 25rem; 
+       top: 19rem;
+    }
+}
+
+
+@media(min-width: 2000px) {
+    .image {
+       width: 150px;
+       height: 150px;
+       left: 26rem; 
+       top: 18rem;
+    }
+}
+
 
 .category {
     font-family: 'Josefin Sans', sans-serif;
@@ -300,6 +320,15 @@ export default {
     display: flex;
 }
 
+@media(min-width: 1800px) {
+    .container {
+        width: 120%;
+        height: 100%;
+        margin: 20px 0 10px 0;
+         padding: 20px; /* más espacio interior en viewports más grandes */
+        font-size: 18px;
+    }
+}
 .quiz-container {
     display: flex;
     flex-direction: column;
