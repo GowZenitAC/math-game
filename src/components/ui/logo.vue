@@ -1,6 +1,7 @@
 <template>
     <div>
         <img class="logo" src="/src/assets/img/logom.png" alt="">
+      
     </div>
 </template>
 <style>
@@ -12,5 +13,6 @@
         top: -80px;
     
     }
+   
 
 </style>
