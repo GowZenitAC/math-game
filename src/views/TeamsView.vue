@@ -25,7 +25,7 @@
       <div class="back">
         <h1 class="title">TSU</h1>
         <section>
-          <p class="subtitle">Por favor Selecciona tu carrera</p>
+          <p class="subtitle">Por favor Selecciona tu carrera y equipo</p>
           <div class="select-teams">
             <div class="select-container">
               <select name="team" id="1" v-model="carrerasSelected" @change="() => { savecarreras(); selectBanco(); saveQuestions(); }">
