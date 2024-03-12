@@ -49,6 +49,8 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 let EQUIPOS_URL = 'https://adminmathday.com/api/apiequipos';
 let CARRERAS_URL = 'https://adminmathday.com/api/carreras';
@@ -87,9 +89,25 @@ export default {
   methods: {
     next() {
       if (!this.flipped) {
-        this.$router.push({ name: 'game' });
+        if (!this.equipoSelected) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Debes seleccionar un equipo para continuar',
+          })
+        }else{
+          this.$router.push({ name: 'game' });
+        }
       }else{
-        this.$router.push({ name: 'gameTSU' });
+        if (this.carrerasSelected === '' || this.equipotsuSelected === '') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Debes seleccionar una carrera y un equipo para continuar',
+          })
+        }else{
+          this.$router.push({ name: 'gameTSU' });
+        }
       }
     },
    

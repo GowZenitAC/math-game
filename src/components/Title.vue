@@ -35,7 +35,7 @@ h3 {
 }
 
 .text {
-  background: linear-gradient(90deg, rgb(158, 68, 33), rgb(29, 26, 180));
+  background:  rgb(38, 14, 0);
   background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-left: 6px;
@@ -44,8 +44,8 @@ h3 {
 }
 
 .text-1 {
-  background: linear-gradient(rgb(40, 180, 99 ), rgb(244, 208, 63 ));
-  background-clip: text;
+  background:  rgb(243, 143, 4);
+  background-clip: text; 
   -webkit-text-fill-color: transparent;
   display: inline-block;
   animation: swing-in-left-fwd 0.8s cubic-bezier(0.175, 0.885, 0.320, 1.275) 1s both;
