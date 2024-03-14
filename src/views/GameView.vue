@@ -42,7 +42,7 @@ export default {
             word_index: 0,
             opcion: "",
             puntaje: 0,
-            timeRemaining: 40,
+            timeRemaining: 5400,
             timerInterval: null,
             startTime: null,
             endTime: null,
