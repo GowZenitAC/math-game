@@ -42,7 +42,7 @@ export default {
             word_index: 0,
             opcion: "",
             puntaje: 0,
-            timeRemaining: 5400,
+            timeRemaining: 40,
             timerInterval: null,
             startTime: null,
             endTime: null,
@@ -92,7 +92,7 @@ export default {
                 } else {
                     clearInterval(this.timerInterval);
                     // Aquí puedes agregar lógica adicional cuando el tiempo llega a cero
-                    alert('Tiempo agotado!');
+                    this.finishGame();
                 }
             }, 1000); // Actualizar cada segundo
         },

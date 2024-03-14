@@ -92,7 +92,7 @@ export default {
                 } else {
                     clearInterval(this.timerInterval);
                     // Aquí puedes agregar lógica adicional cuando el tiempo llega a cero
-                    alert('Tiempo agotado!');
+                    this.finishGame();
                 }
             }, 1000); // Actualizar cada segundo
         },
