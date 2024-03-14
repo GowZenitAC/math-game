@@ -1,6 +1,6 @@
 <template>
   <img class="logo" src="/assets/images/logom.png" alt="" />
-  <button  disabled class="cambio" @click="toggleCard">Equipos TSU</button>
+  <button class="cambio" @click="toggleCard">Equipos TSU</button>
   <main class="container">
     <h1 class="title">Equipos</h1>
     <div class="card" :class="{ 'flipped': flipped }">
